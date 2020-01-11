@@ -3,8 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from .models import *
 from .serializers import *
-import random
-from datetime import date
+import random   
+import datetime
 from django.core.mail import send_mail, send_mass_mail
 # from rest_framework.decorators import parser_classes
 
@@ -549,11 +549,17 @@ def api_add_equipment(request):
 
     if request.method == 'POST':
         try:
+            now = datetime.datetime.now()
+            now = str(now)
+            serial_no = "S"+now[2:4]+now[5:7]+now[8:10]+now[11:13]+now[14:16]+now[17:19] 
+            
+            request.data['serial_no'] = serial_no
+            print(request.data)
             serializer = EquipmentSerializerAJ(data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response({'code': 2, 'data': serializer.data})
-            return Response({'code': 4, 'message': 'invalid information'})
+            return Response({'code': 4, 'message': serializer.errors})
         except Exception as e:
             return Response({'code': 4, 'error': str(e)})
 

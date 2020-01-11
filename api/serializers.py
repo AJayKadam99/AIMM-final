@@ -68,7 +68,7 @@ class MaintenanceTicketSerializer(serializers.ModelSerializer):
 class UserRequestSerializer(serializers.ModelSerializer):
     department = serializers.CharField(
         source='department.name', read_only=True)
-
+    teams = TeamSerializer( many=True)
     class Meta:
         model = UserRequest
         fields = ('id', 'name', 'email', 'department', 'designation', 'status')
@@ -92,11 +92,10 @@ class EquipmentMaintenanceSerializer(serializers.ModelSerializer):
 # ******************************************AJAY************************
 #
 class EquipmentSerializerAJ(serializers.ModelSerializer):
-
     class Meta:
         model = Equipment
         fields = ('serial_no', 'name', 'department', 'description',
-                  'priority', 'location', 'installation_date', 'maintenance_latency')
+                  'priority', 'location', 'installation_date', 'maintenance_latency', 'teams')
 
         extra_kwargs = {'installation_date': {'required': False}}
 
